@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Authentication</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .auth-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2a5298;
+            margin-bottom: 20px;
+        }
+
+        .options-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-button {
+            flex: 1;
+            background: #2a5298;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .option-button:hover {
+            background: #1e3c72;
+        }
+
+        .form-container {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-container.active {
+            display: flex;
+        }
+
+        .highlight-text {
+            color: #2a5298;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: #2a5298;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .login-button:hover {
+            background: #1e3c72;
+        }
+
+        .error-message {
+            margin-top: 15px;
+            color: #ff7272;
+            font-size: 0.9rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="background"></canvas>
+
+    <div class="auth-container">
+        <h1>Welcome</h1>
+        <div class="options-container">
+            <button class="option-button" id="menteeButton">Login as Mentee</button>
+            <button class="option-button" id="mentorButton">Login as Mentor</button>
+        </div>
+
+        <!-- Mentee Login Form -->
+        <div class="form-container" id="menteeForm">
+            <h2 id="menteeText">Mentee Login</h2>
+            <input type="text" id="menteeUsername" class="input-field" placeholder="Username">
+            <input type="password" id="menteePassword" class="input-field" placeholder="Password">
+            <button class="login-button" onclick="login('mentee')">Login</button>
+            <p class="error-message" id="menteeError">Invalid username or password.</p>
+        </div>
+
+        <!-- Mentor Login Form -->
+        <div class="form-container" id="mentorForm">
+            <h2 id="mentorText">Mentor Login</h2>
+            <input type="text" id="mentorUsername" class="input-field" placeholder="Username">
+            <input type="password" id="mentorPassword" class="input-field" placeholder="Password">
+            <button class="login-button" onclick="login('mentor')">Login</button>
+            <p class="error-message" id="mentorError">Invalid username or password.</p>
+        </div>
+    </div>
+
+    <script>
+        const menteeButton = document.getElementById('menteeButton');
+        const mentorButton = document.getElementById('mentorButton');
+        const menteeForm = document.getElementById('menteeForm');
+        const mentorForm = document.getElementById('mentorForm');
+        const menteeText = document.getElementById('menteeText');
+        const mentorText = document.getElementById('mentorText');
+
+        menteeButton.addEventListener('click', () => {
+            menteeForm.classList.add('active');
+            mentorForm.classList.remove('active');
+            menteeText.classList.add('highlight-text');
+            mentorText.classList.remove('highlight-text');
+        });
+
+        mentorButton.addEventListener('click', () => {
+            mentorForm.classList.add('active');
+            menteeForm.classList.remove('active');
+            mentorText.classList.add('highlight-text');
+            menteeText.classList.remove('highlight-text');
+        });
+
+        const login = (role) => {
+            let username, password, errorElement;
+            if (role === 'mentee') {
+                username = document.getElementById('menteeUsername').value.trim();
+                password = document.getElementById('menteePassword').value;
+                errorElement = document.getElementById('menteeError');
+                if (username === 'Manas' && password === 'admin@manas') {
+                    localStorage.setItem('userRole', 'mentee');
+                    window.location.href = 'index.html';
+                } else {
+                    errorElement.style.display = 'block';
+                }
+            } else if (role === 'mentor') {
+                username = document.getElementById('mentorUsername').value.trim();
+                password = document.getElementById('mentorPassword').value;
+                errorElement = document.getElementById('mentorError');
+                if (username === 'mentorUser' && password === 'mentorPass') {
+                    localStorage.setItem('userRole', 'mentor');
+                    window.location.href = 'mentor.html';
+                } else {
+                    errorElement.style.display = 'block';
+                }
+            }
+        };
+
+        const canvas = document.getElementById("background");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particlesArray = [];
+        const colors = ["#fff", "#4e56f5", "#2a5298"];
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 1 - 0.5;
+                this.speedY = Math.random() * 1 - 0.5;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 100; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particlesArray.forEach((particle) => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+    </script>
+</body>
+</html>

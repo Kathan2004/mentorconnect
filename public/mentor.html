@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard</title>
+    <link rel="stylesheet" href="mentor.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://github.com/shadcn.png" alt="User Avatar" class="avatar">
+            <h2>Mentor Dashboard</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="mentor.html" class="sidebar-link">Dashboard</a>
+            <a href="schedule.html" class="sidebar-link">Schedule</a>
+            <a href="resources.html" class="sidebar-link">Resources</a>
+            <a href="messages.html" class="sidebar-link">Messages</a>
+        </nav>
+        <a href="settings.html" class="sidebar-btn">Settings</a>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-content">
+        <header class="main-header">
+            <h1>Welcome, Mentor!</h1>
+            <div class="header-actions">
+                <button class="icon-button">🔔</button>
+                <button class="icon-button">⚙️</button>
+            </div>
+        </header>
+
+        <!-- Mentor Dashboard Overview -->
+        <section class="overview">
+            <div class="section-header">
+                <h2>Mentee Progress Overview</h2>
+            </div>
+            <div class="progress-container">
+                <div class="progress-item">
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 60%;"></div>
+                    </div>
+                    <p>Steady progress. Check their goals below.</p>
+                    <button class="btn-secondary" onclick="toggleDetails('manas-progress')">Show Details</button>
+                    <div id="manas-progress" class="progress-details">
+                        <ul>
+                            <li>Goal 1: Completed</li>
+                            <li>Goal 2: In Progress (80%)</li>
+                            <li>Goal 3: Pending</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="progress-item">
+                    <p><strong>Upcoming Session:</strong> November 25, 2024 | 10:00 AM - 11:00 AM</p>
+                    <button class="btn-primary">View Details</button>
+                    <button class="btn-primary join-button">Join</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentee Requests -->
+        <section class="requests">
+            <div class="section-header">
+                <h2>Mentee Requests</h2>
+            </div>
+            <div class="requests-list">
+                <div class="request-item">
+                    <p><strong>Manas Chouksey</strong> has requested your mentorship.</p>
+                    <button class="btn-primary">Accept</button>
+                    <button class="btn-danger">Reject</button>
+                </div>
+                <div class="request-item">
+                    <p><strong>Kathan Somani</strong> has requested your mentorship.</p>
+                    <button class="btn-primary">Accept</button>
+                    <button class="btn-danger">Reject</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentor Schedule -->
+        <section class="schedule">
+            <div class="section-header">
+                <h2>Your Schedule</h2>
+            </div>
+            <div class="schedule-list">
+                <div class="schedule-item">
+                    <p><strong>Session with Manas</strong></p>
+                    <p>November 25, 2024 | 10:00 AM - 11:00 AM</p>
+                    <button class="btn-primary join-button">Join</button>
+                </div>
+                <div class="schedule-item">
+                    <p><strong>Session with Kathan Somani</strong></p>
+                    <p>November 26, 2024 | 2:00 PM - 3:00 PM</p>
+                    <button class="btn-primary join-button">Join</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        if(localStorage.getItem('userRole') !== 'mentor') {
+            window.location.href = 'auth.html';
+        }
+
+        // Toggle the visibility of the progress details
+        function toggleDetails(progressId) {
+            const progressDetails = document.getElementById(progressId);
+            progressDetails.style.display = progressDetails.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

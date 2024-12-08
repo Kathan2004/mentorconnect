@@ -1,0 +1,346 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7fafc;
+}
+
+.min-h-screen {
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #3182ce;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-left: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #4a5568;
+    font-size: 1rem;
+    font-weight: 500;
+    padding-bottom: 0.5rem;
+}
+
+.nav-link:hover {
+    color: #2d3748;
+}
+
+.nav-link.active {
+    border-bottom: 2px solid #3182ce;
+    color: #2d3748;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.avatar img {
+    border-radius:50%;
+    width: 40px;
+    height: 40px;
+}
+
+.main-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    padding: 1rem;
+    background-color: #edf2f7;
+    border-radius: 8px 8px 0 0;
+}
+
+.card-header h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+.card-content {
+    padding: 1rem;
+}
+
+.session-details span {
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+.session-details strong {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+.progress-bar {
+    background-color: #e2e8f0;
+    border-radius: 8px;
+    height: 8px;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.progress {
+    background-color: #3182ce;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.card-footer {
+    padding: 1rem;
+    text-align: center;
+}
+
+.btn, .btn-outline {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn {
+    background-color: #3182ce;
+    color: white;
+    border: none;
+}
+
+.btn:hover {
+    background-color: #2b6cb0;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #3182ce;
+    border: 2px solid #3182ce;
+}
+
+.btn-outline:hover {
+    background-color: #3182ce;
+    color: white;
+}
+.find-mentors-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    background: linear-gradient(135deg, #f7fafc 30%, #e2e8f0 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    max-width: 800px;
+    background: white;
+    padding: 1rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    align-items: center;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #3182ce;
+    border-radius: 8px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #2b6cb0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.filters {
+    display: flex;
+    gap: 1rem;
+}
+
+.filter-dropdown {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 2px solid #3182ce;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.filter-dropdown:focus,
+.filter-dropdown:hover {
+    outline: none;
+    border-color: #2b6cb0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.mentor-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    padding: 1rem;
+    background-color: #edf2f7;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    background-color: #3182ce;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.card-header h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #2d3748;
+}
+
+.card-header p {
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+.card-content {
+    padding: 1rem;
+    color: #2d3748;
+}
+
+.skills-container {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.badge {
+    background-color: #e2e8f0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.875rem;
+    color: #3182ce;
+}
+
+.card-footer {
+    padding: 1rem;
+    background-color: #f7fafc;
+    border-radius: 0 0 8px 8px;
+    text-align: center;
+}
+
+.card-footer button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.card-footer button:hover {
+    background-color: #2b6cb0;
+}

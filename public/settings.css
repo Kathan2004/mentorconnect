@@ -1,0 +1,177 @@
+/* General Layout */
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    background-color: #f4f7fa;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: #1f2a44;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    padding-top: 20px;
+}
+
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar-header .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-link {
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    width: 100%;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.sidebar-link:hover {
+    background-color: #4c6ef5;
+}
+
+.sidebar-btn {
+    background-color: #3c4858;
+    color: white;
+    width: 100%;
+    padding: 15px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.sidebar-btn:hover {
+    background-color: #4c6ef5;
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.settings-section {
+    margin-top: 20px;
+}
+
+.section-header {
+    background-color: #f0f4f8;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.profile-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+input:disabled, textarea:disabled, select:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+input[type="file"] {
+    padding: 5px;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Additional settings section */
+.additional-settings {
+    margin-top: 30px;
+}
+
+.settings-item {
+    margin-bottom: 15px;
+}
+
+.settings-item label {
+    display: inline-block;
+    width: 200px;
+    font-weight: bold;
+}
+
+.settings-item input, .settings-item select {
+    width: calc(100% - 220px);
+    display: inline-block;
+}
+
+.settings-item input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
