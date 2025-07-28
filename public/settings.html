@@ -3,156 +3,414 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mentor Settings</title>
-    <link rel="stylesheet" href="settings.css">
+    <title>Settings - MentorConnect</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .settings-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-header {
+            margin-bottom: 25px;
+        }
+        
+        .section-header h2 {
+            color: #1f2937;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group input:disabled,
+        .form-group textarea:disabled,
+        .form-group select:disabled {
+            background-color: #f9fafb;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #667eea;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .success-message {
+            background-color: #d1fae5;
+            color: #065f46;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .error-message {
+            background-color: #fef2f2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #fecaca;
+        }
+    </style>
 </head>
 <body>
-    <!-- Sidebar Navigation -->
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <img src="https://github.com/shadcn.png" alt="User Avatar" class="avatar">
-            <h2>Mentor Dashboard</h2>
-        </div>
-        <nav class="sidebar-nav">
-            <a href="mentor.html" class="sidebar-link">Dashboard</a>
-            <a href="schedule.html" class="sidebar-link">Schedule</a>
-            <a href="resources.html" class="sidebar-link">Resources</a>
-            <a href="messages.html" class="sidebar-link">Messages</a>
+    <div class="min-h-screen bg-gradient-to-br from-indigo-100 via-indigo-200 to-blue-300">
+        <!-- Navbar -->
+        <nav class="navbar">
+            <div class="navbar-container">
+                <div class="navbar-left">
+                    <div class="logo">
+                        <span>MentorConnect</span>
+                    </div>
+                    <div class="navbar-links">
+                        <a href="index.html" class="nav-link">Dashboard</a>
+                        <a href="Schedule.html" class="nav-link">Schedule</a>
+                        <a href="messages.html" class="nav-link">Messages</a>
+                        <a href="mentor.html" class="nav-link">Find Mentors</a>
+                        <a href="inbox.html" class="nav-link">Inbox</a>
+                    </div>
+                </div>
+                <div class="navbar-right">
+                    <button class="icon-button">🔔</button>
+                    <a href="settings.html" class="icon-button">⚙️</a>
+                    <div class="avatar">
+                        <img src="https://github.com/shadcn.png" alt="User Avatar">
+                    </div>
+                </div>
+            </div>
         </nav>
-        <button class="sidebar-btn">Settings</button>
-    </div>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-        <header class="main-header">
-            <h1>Mentor Settings</h1>
-        </header>
+        <!-- Main Content -->
+        <div class="settings-container">
+            <h1 class="text-3xl font-bold mb-6 text-center text-gray-900">Settings</h1>
+            
+            <div id="messageContainer"></div>
 
-        <!-- Mentor Profile Settings Form -->
-        <section class="settings-section">
-            <div class="section-header">
-                <h2>Edit Profile</h2>
-            </div>
-            <form class="profile-form" id="profileForm" action="saveProfile" method="POST">
-                <div class="form-group">
-                    <label for="mentorName">Name:</label>
-                    <input type="text" id="mentorName" name="name" required disabled>
+            <!-- Profile Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h2>Profile Settings</h2>
                 </div>
+                <form id="profileForm">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required disabled>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorEmail">Email:</label>
-                    <input type="email" id="mentorEmail" name="email" required disabled>
-                </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required disabled>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorPhone">Phone:</label>
-                    <input type="tel" id="mentorPhone" name="phone" required disabled>
-                </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone" required disabled>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorBio">Bio:</label>
-                    <textarea id="mentorBio" name="bio" rows="4" required disabled></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="bio">Bio:</label>
+                        <textarea id="bio" name="bio" rows="4" required disabled></textarea>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorExperience">Work Experience:</label>
-                    <textarea id="mentorExperience" name="experience" rows="4" required disabled></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="experience">Work Experience:</label>
+                        <textarea id="experience" name="experience" rows="4" required disabled></textarea>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorSkills">Skills:</label>
-                    <input type="text" id="mentorSkills" name="skills" required disabled>
-                </div>
+                    <div class="form-group">
+                        <label for="skills">Skills:</label>
+                        <input type="text" id="skills" name="skills" required disabled>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorLinkedIn">LinkedIn:</label>
-                    <input type="url" id="mentorLinkedIn" name="linkedin" required disabled>
-                </div>
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn:</label>
+                        <input type="url" id="linkedin" name="linkedin" required disabled>
+                    </div>
 
-                <div class="form-group">
-                    <label for="mentorImage">Profile Image:</label>
-                    <input type="file" id="mentorImage" name="profileImage" disabled>
-                </div>
-
-                <button type="button" class="btn-primary" id="saveBtn" disabled>Save Changes</button>
-            </form>
-            <button class="btn-secondary" id="editProfileBtn" onclick="editProfile()">Edit Profile</button>
-        </section>
-
-        <!-- Mentor Additional Settings -->
-        <section class="additional-settings">
-            <div class="section-header">
-                <h2>Additional Settings</h2>
-            </div>
-            <div class="settings-item">
-                <label for="mentorAvailability">Availability:</label>
-                <select id="mentorAvailability" name="availability" disabled>
-                    <option value="available">Available</option>
-                    <option value="unavailable">Unavailable</option>
-                    <option value="busy">Busy</option>
-                </select>
+                    <button type="button" class="btn-primary" id="saveBtn" disabled>Save Changes</button>
+                    <button type="button" class="btn-secondary" id="editBtn" onclick="toggleEdit()">Edit Profile</button>
+                </form>
             </div>
 
-            <div class="settings-item">
-                <label for="mentorTimeZone">Time Zone:</label>
-                <select id="mentorTimeZone" name="timeZone" disabled>
-                    <option value="UTC+5:30">UTC+5:30</option>
-                    <option value="UTC-5">UTC-5</option>
-                    <option value="UTC+1">UTC+1</option>
-                </select>
+            <!-- Notification Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h2>Notification Settings</h2>
+                </div>
+                <div class="settings-item">
+                    <span>Email Notifications</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="emailNotifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <span>Push Notifications</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="pushNotifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="settings-item">
+                    <span>Message Notifications</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="messageNotifications" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
 
-            <div class="settings-item">
-                <label for="mentorNotifications">Email Notifications:</label>
-                <input type="checkbox" id="mentorNotifications" name="notifications" checked disabled>
-                <label for="mentorNotifications">Receive notifications for mentee messages and requests</label>
+            <!-- Privacy Settings -->
+            <div class="settings-section">
+                <div class="section-header">
+                    <h2>Privacy Settings</h2>
+                </div>
+                <div class="settings-item">
+                    <span>Profile Visibility</span>
+                    <select id="profileVisibility">
+                        <option value="public">Public</option>
+                        <option value="mentors">Mentors Only</option>
+                        <option value="private">Private</option>
+                    </select>
+                </div>
+                <div class="settings-item">
+                    <span>Show Online Status</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="onlineStatus" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
             </div>
-        </section>
+        </div>
     </div>
 
     <script>
-        // Fetch existing profile when the page loads
-        window.onload = function () {
+        let isEditing = false;
+
+        // Load profile data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfile();
+        });
+
+        function loadProfile() {
             fetch('/getProfile')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('mentorName').value = data.name || '';
-                    document.getElementById('mentorEmail').value = data.email || '';
-                    document.getElementById('mentorPhone').value = data.phone || '';
-                    document.getElementById('mentorBio').value = data.bio || '';
-                    document.getElementById('mentorExperience').value = data.experience || '';
-                    document.getElementById('mentorSkills').value = data.skills || '';
-                    document.getElementById('mentorLinkedIn').value = data.linkedin || '';
+                    document.getElementById('name').value = data.name || '';
+                    document.getElementById('email').value = data.email || '';
+                    document.getElementById('phone').value = data.phone || '';
+                    document.getElementById('bio').value = data.bio || '';
+                    document.getElementById('experience').value = data.experience || '';
+                    document.getElementById('skills').value = data.skills || '';
+                    document.getElementById('linkedin').value = data.linkedin || '';
                 })
-                .catch(error => console.error('Error fetching profile:', error));
-        };
-    
-        // Edit profile to enable fields
-        function editProfile() {
-            const formElements = document.querySelectorAll('.profile-form input, .profile-form textarea, .profile-form select');
-            formElements.forEach(element => element.disabled = false); // Enable all fields
-            document.getElementById('saveBtn').disabled = false; // Enable save button
+                .catch(error => {
+                    console.error('Error loading profile:', error);
+                    showMessage('Error loading profile data', 'error');
+                });
         }
-    
-        // Save profile changes
-        document.getElementById('saveBtn').addEventListener('click', function () {
-            const formData = new FormData(document.querySelector('.profile-form'));
-            const profileData = Object.fromEntries(formData.entries());
-    
+
+        function toggleEdit() {
+            const editBtn = document.getElementById('editBtn');
+            const saveBtn = document.getElementById('saveBtn');
+            const inputs = document.querySelectorAll('#profileForm input, #profileForm textarea');
+            
+            isEditing = !isEditing;
+            
+            inputs.forEach(input => {
+                input.disabled = !isEditing;
+            });
+            
+            if (isEditing) {
+                editBtn.textContent = 'Cancel';
+                saveBtn.disabled = false;
+            } else {
+                editBtn.textContent = 'Edit Profile';
+                saveBtn.disabled = true;
+                loadProfile(); // Reset to original values
+            }
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', function() {
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                bio: document.getElementById('bio').value,
+                experience: document.getElementById('experience').value,
+                skills: document.getElementById('skills').value,
+                linkedin: document.getElementById('linkedin').value
+            };
+
             fetch('/saveProfile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(profileData)
+                body: JSON.stringify(formData)
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                alert('Profile saved successfully!');
+                if (data.success) {
+                    showMessage('Profile updated successfully!', 'success');
+                    toggleEdit(); // Exit edit mode
+                } else {
+                    showMessage('Error updating profile', 'error');
+                }
             })
             .catch(error => {
                 console.error('Error saving profile:', error);
-                alert('Failed to save profile');
+                showMessage('Error updating profile', 'error');
+            });
+        });
+
+        function showMessage(message, type) {
+            const messageContainer = document.getElementById('messageContainer');
+            const messageClass = type === 'success' ? 'success-message' : 'error-message';
+            
+            messageContainer.innerHTML = `<div class="${messageClass}">${message}</div>`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Save notification settings
+        document.querySelectorAll('.toggle-switch input, select').forEach(element => {
+            element.addEventListener('change', function() {
+                // In a real app, you would save these settings to the server
+                console.log('Setting changed:', this.id, this.value || this.checked);
             });
         });
     </script>

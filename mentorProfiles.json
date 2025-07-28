@@ -1,0 +1,38 @@
+[
+  {
+    "id": "1753734721612",
+    "name": "Kathan Somani",
+    "email": "kathansomani9875@gmail.com",
+    "phone": "09574943784",
+    "bio": "",
+    "experience": "",
+    "skills": [
+      ""
+    ],
+    "linkedin": "",
+    "hourlyRate": 44,
+    "availability": "weekdays",
+    "rating": 0,
+    "totalSessions": 0,
+    "isAvailable": true,
+    "createdAt": "2025-07-28T20:32:01.612Z"
+  },
+  {
+    "id": "1753734853043",
+    "name": "Kathan Somani",
+    "email": "kathansomani9875@gmail.com",
+    "phone": "09574943784",
+    "bio": "",
+    "experience": "",
+    "skills": [
+      ""
+    ],
+    "linkedin": "",
+    "hourlyRate": 11,
+    "availability": "weekends",
+    "rating": 0,
+    "totalSessions": 0,
+    "isAvailable": true,
+    "createdAt": "2025-07-28T20:34:13.043Z"
+  }
+]

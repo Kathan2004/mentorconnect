@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Requests - MentorConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+
+        .nav-link.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .pending { color: #d69e2e; }
+        .approved { color: #38a169; }
+        .rejected { color: #e53e3e; }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            min-width: 150px;
+            font-size: 0.9rem;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .requests-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .request-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+            transition: background-color 0.3s ease;
+        }
+
+        .request-item:hover {
+            background-color: #f7fafc;
+        }
+
+        .request-item:last-child {
+            border-bottom: none;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .request-info {
+            flex: 1;
+        }
+
+        .request-mentee {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .request-date {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .request-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fef5e7;
+            color: #d69e2e;
+        }
+
+        .status-approved {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .status-rejected {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .request-message {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        .request-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-approve {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve:hover {
+            background: #38a169;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reject:hover {
+            background: #e53e3e;
+            transform: translateY(-2px);
+        }
+
+        .btn-message {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-message:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #718096;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .response-form {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .response-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .filter-row {
+                flex-direction: column;
+            }
+            
+            .request-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .request-actions {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">MentorConnect</div>
+            <div class="nav-links">
+                <a href="/mentor/dashboard" class="nav-link">Dashboard</a>
+                <a href="/mentor/requests" class="nav-link active">Requests</a>
+                <a href="/mentor/messages" class="nav-link">Messages</a>
+                <a href="/mentor/sessions" class="nav-link">Sessions</a>
+                <a href="/mentor/profile" class="nav-link">Profile</a>
+            </div>
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">M</div>
+                <span id="userName">Mentor</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">Mentorship Requests</h1>
+            <p class="page-subtitle">Review and respond to mentorship requests from students</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value pending" id="pendingCount">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value approved" id="approvedCount">0</div>
+                <div class="stat-label">Approved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value rejected" id="rejectedCount">0</div>
+                <div class="stat-label">Rejected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-row">
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                </select>
+                <select id="dateFilter" class="filter-select">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="requests-container" id="requestsContainer">
+            <div class="loading">Loading requests...</div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let allRequests = [];
+
+        // Check authentication
+        function checkAuth() {
+            const userRole = localStorage.getItem('userRole');
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
+
+            if (!userRole || !userId || userRole !== 'mentor') {
+                window.location.href = '/';
+                return;
+            }
+
+            currentUser = {
+                id: userId,
+                name: userName,
+                role: userRole
+            };
+
+            // Update UI
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+
+            // Load requests
+            loadRequests();
+        }
+
+        function loadRequests() {
+            fetch(`/api/mentor/requests/${currentUser.id}`)
+                .then(response => response.json())
+                .then(requests => {
+                    allRequests = requests;
+                    updateStats(requests);
+                    displayRequests(requests);
+                })
+                .catch(error => {
+                    console.error('Error loading requests:', error);
+                    document.getElementById('requestsContainer').innerHTML = `
+                        <div class="empty-state">
+                            <h3>Error loading requests</h3>
+                            <p>Please try again later.</p>
+                        </div>
+                    `;
+                });
+        }
+
+        function updateStats(requests) {
+            const pending = requests.filter(r => r.status === 'pending').length;
+            const approved = requests.filter(r => r.status === 'approved').length;
+            const rejected = requests.filter(r => r.status === 'rejected').length;
+            const total = requests.length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        function displayRequests(requests) {
+            const container = document.getElementById('requestsContainer');
+            
+            if (!requests || requests.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No requests found</h3>
+                        <p>You don't have any mentorship requests yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const requestsHTML = requests.map(request => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <div class="request-info">
+                            <div class="request-mentee">Mentee Request</div>
+                            <div class="request-date">${new Date(request.createdAt).toLocaleDateString()}</div>
+                        </div>
+                        <span class="request-status status-${request.status}">${request.status}</span>
+                    </div>
+                    
+                    <div class="request-message">
+                        <strong>Message:</strong><br>
+                        ${request.message}
+                    </div>
+                    
+                    <div class="request-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Requested Date</span>
+                            <span class="detail-value">${request.requestedDate || 'Not specified'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Request ID</span>
+                            <span class="detail-value">${request.id}</span>
+                        </div>
+                    </div>
+                    
+                    ${request.status === 'pending' ? `
+                        <div class="request-actions">
+                            <button class="btn-approve" onclick="handleRequest('${request.id}', 'approved')">Approve</button>
+                            <button class="btn-reject" onclick="handleRequest('${request.id}', 'rejected')">Reject</button>
+                            <button class="btn-message" onclick="showResponseForm('${request.id}')">Send Message</button>
+                        </div>
+                        <div class="response-form" id="responseForm-${request.id}">
+                            <div class="form-group">
+                                <label for="responseMessage-${request.id}">Response Message</label>
+                                <textarea id="responseMessage-${request.id}" placeholder="Add a personal message to your response..."></textarea>
+                            </div>
+                            <div class="request-actions">
+                                <button class="btn-approve" onclick="handleRequestWithMessage('${request.id}', 'approved')">Approve with Message</button>
+                                <button class="btn-reject" onclick="handleRequestWithMessage('${request.id}', 'rejected')">Reject with Message</button>
+                                <button class="btn-secondary" onclick="hideResponseForm('${request.id}')">Cancel</button>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="request-actions">
+                            <button class="btn-message" onclick="sendMessage('${request.menteeId}')">Send Message</button>
+                        </div>
+                    `}
+                </div>
+            `).join('');
+
+            container.innerHTML = requestsHTML;
+        }
+
+        function handleRequest(requestId, status) {
+            const responseMessage = status === 'approved' ? 'Request approved!' : 'Request rejected.';
+            
+            fetch(`/api/mentor/request/${requestId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: status,
+                    responseMessage: responseMessage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Request ${status} successfully!`);
+                    loadRequests(); // Reload requests
+                } else {
+                    alert('Error processing request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error handling request:', error);
+                alert('Error processing request. Please try again.');
+            });
+        }
+
+        function handleRequestWithMessage(requestId, status) {
+            const messageElement = document.getElementById(`responseMessage-${requestId}`);
+            const responseMessage = messageElement.value.trim() || 
+                (status === 'approved' ? 'Request approved!' : 'Request rejected.');
+            
+            fetch(`/api/mentor/request/${requestId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: status,
+                    responseMessage: responseMessage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Request ${status} successfully!`);
+                    hideResponseForm(requestId);
+                    loadRequests(); // Reload requests
+                } else {
+                    alert('Error processing request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error handling request:', error);
+                alert('Error processing request. Please try again.');
+            });
+        }
+
+        function showResponseForm(requestId) {
+            document.getElementById(`responseForm-${requestId}`).classList.add('active');
+        }
+
+        function hideResponseForm(requestId) {
+            document.getElementById(`responseForm-${requestId}`).classList.remove('active');
+            document.getElementById(`responseMessage-${requestId}`).value = '';
+        }
+
+        function sendMessage(menteeId) {
+            // Redirect to messages page or open message modal
+            alert('This would open a message interface to communicate with the mentee.');
+        }
+
+        function filterRequests() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            let filteredRequests = allRequests.filter(request => {
+                // Status filter
+                const matchesStatus = !statusFilter || request.status === statusFilter;
+
+                // Date filter
+                const matchesDate = !dateFilter || (() => {
+                    const requestDate = new Date(request.createdAt);
+                    const today = new Date();
+                    
+                    switch(dateFilter) {
+                        case 'today':
+                            return requestDate.toDateString() === today.toDateString();
+                        case 'week':
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            return requestDate >= weekAgo;
+                        case 'month':
+                            const monthAgo = new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+                            return requestDate >= monthAgo;
+                        default:
+                            return true;
+                    }
+                })();
+
+                return matchesStatus && matchesDate;
+            });
+
+            displayRequests(filteredRequests);
+        }
+
+        // Event listeners for filtering
+        document.getElementById('statusFilter').addEventListener('change', filterRequests);
+        document.getElementById('dateFilter').addEventListener('change', filterRequests);
+
+        function logout() {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        // Refresh data every 30 seconds
+        setInterval(loadRequests, 30000);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentee Dashboard - MentorConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+
+        .nav-link.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            color: #48bb78;
+        }
+
+        .sessions-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .mentors-bg { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .progress-bg { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .goals-bg { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .card-action {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info h4 {
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .session-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .session-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-upcoming { background: #bee3f8; color: #2b6cb0; }
+        .status-ongoing { background: #c6f6d5; color: #2f855a; }
+        .status-completed { background: #fed7d7; color: #c53030; }
+
+        .request-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .request-item:last-child {
+            border-bottom: none;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-mentor {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .request-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background: #fef5e7; color: #d69e2e; }
+        .status-approved { background: #c6f6d5; color: #2f855a; }
+        .status-rejected { background: #fed7d7; color: #c53030; }
+
+        .request-message {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-date {
+            color: #a0aec0;
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .goal-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .goal-item:last-child {
+            border-bottom: none;
+        }
+
+        .goal-text {
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .goal-status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-completed { background: #c6f6d5; color: #2f855a; }
+        .status-in-progress { background: #bee3f8; color: #2b6cb0; }
+        .status-pending { background: #fef5e7; color: #d69e2e; }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: #f7fafc;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">MentorConnect</div>
+            <div class="nav-links">
+                <a href="/mentee/dashboard" class="nav-link active">Dashboard</a>
+                <a href="/mentee/find-mentors" class="nav-link">Find Mentors</a>
+                <a href="/mentee/messages" class="nav-link">Messages</a>
+                <a href="/mentee/sessions" class="nav-link">Sessions</a>
+                <a href="/mentee/profile" class="nav-link">Profile</a>
+            </div>
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">U</div>
+                <span id="userName">User</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="welcome-section">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome back!</h1>
+            <p class="welcome-subtitle">Here's what's happening with your learning journey</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Sessions</span>
+                    <div class="stat-icon sessions-bg">📅</div>
+                </div>
+                <div class="stat-value" id="totalSessions">0</div>
+                <div class="stat-change">+2 this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Mentors</span>
+                    <div class="stat-icon mentors-bg">👨‍🏫</div>
+                </div>
+                <div class="stat-value" id="activeMentors">0</div>
+                <div class="stat-change">+1 this week</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Learning Progress</span>
+                    <div class="stat-icon progress-bg">📈</div>
+                </div>
+                <div class="stat-value" id="learningProgress">0%</div>
+                <div class="stat-change">+15% this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Goals Achieved</span>
+                    <div class="stat-icon goals-bg">🎯</div>
+                </div>
+                <div class="stat-value" id="goalsAchieved">0</div>
+                <div class="stat-change">+3 this quarter</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Upcoming Sessions</h2>
+                        <a href="/mentee/sessions" class="card-action">View All</a>
+                    </div>
+                    <div id="upcomingSessions">
+                        <div class="empty-state">
+                            <h3>No upcoming sessions</h3>
+                            <p>Start by finding a mentor and scheduling your first session!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Learning Goals</h2>
+                        <a href="/mentee/profile" class="card-action">Edit Goals</a>
+                    </div>
+                    <div id="learningGoals">
+                        <div class="empty-state">
+                            <h3>No goals set</h3>
+                            <p>Set your learning goals to track your progress!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Mentor Requests</h2>
+                        <a href="/mentee/find-mentors" class="card-action">Find More</a>
+                    </div>
+                    <div id="mentorRequests">
+                        <div class="empty-state">
+                            <h3>No requests yet</h3>
+                            <p>Start connecting with mentors!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="/mentee/find-mentors" class="action-btn">Find Mentor</a>
+                        <a href="/mentee/messages" class="action-btn">Send Message</a>
+                        <a href="/mentee/sessions" class="action-btn">Schedule Session</a>
+                        <a href="/mentee/profile" class="action-btn">Update Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Check authentication
+        function checkAuth() {
+            const userRole = localStorage.getItem('userRole');
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
+
+            if (!userRole || !userId || userRole !== 'mentee') {
+                window.location.href = '/';
+                return;
+            }
+
+            currentUser = {
+                id: userId,
+                name: userName,
+                role: userRole
+            };
+
+            // Update UI
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${currentUser.name}!`;
+
+            // Load dashboard data
+            loadDashboardData();
+        }
+
+        function loadDashboardData() {
+            loadUserProfile();
+            loadSessions();
+            loadMentorRequests();
+        }
+
+        function loadUserProfile() {
+            fetch(`/api/mentee/getProfile/${currentUser.id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        updateStats(data);
+                        updateGoals(data.goals);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading profile:', error);
+                });
+        }
+
+        function updateStats(profile) {
+            // Update stats based on profile data
+            document.getElementById('totalSessions').textContent = profile.totalSessions || 0;
+            // You can add more stats here based on the data
+        }
+
+        function updateGoals(goals) {
+            const goalsContainer = document.getElementById('learningGoals');
+            
+            if (!goals || goals.length === 0) {
+                goalsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No goals set</h3>
+                        <p>Set your learning goals to track your progress!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const goalsList = goals.map(goal => `
+                <div class="goal-item">
+                    <span class="goal-text">${goal}</span>
+                    <span class="goal-status status-in-progress">In Progress</span>
+                </div>
+            `).join('');
+
+            goalsContainer.innerHTML = goalsList;
+        }
+
+        function loadSessions() {
+            fetch(`/api/sessions/${currentUser.id}/mentee`)
+                .then(response => response.json())
+                .then(sessions => {
+                    displaySessions(sessions);
+                })
+                .catch(error => {
+                    console.error('Error loading sessions:', error);
+                });
+        }
+
+        function displaySessions(sessions) {
+            const sessionsContainer = document.getElementById('upcomingSessions');
+            
+            if (!sessions || sessions.length === 0) {
+                sessionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No upcoming sessions</h3>
+                        <p>Start by finding a mentor and scheduling your first session!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter upcoming sessions (next 7 days)
+            const upcoming = sessions.filter(session => {
+                const sessionDate = new Date(session.date);
+                const today = new Date();
+                const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+                return sessionDate >= today && sessionDate <= nextWeek;
+            }).slice(0, 3);
+
+            if (upcoming.length === 0) {
+                sessionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No upcoming sessions</h3>
+                        <p>Start by finding a mentor and scheduling your first session!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sessionsList = upcoming.map(session => `
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Session with Mentor</h4>
+                        <p>${new Date(session.date).toLocaleDateString()} at ${session.time}</p>
+                    </div>
+                    <span class="session-status status-upcoming">Upcoming</span>
+                </div>
+            `).join('');
+
+            sessionsContainer.innerHTML = sessionsList;
+        }
+
+        function loadMentorRequests() {
+            fetch(`/api/mentee/requests/${currentUser.id}`)
+                .then(response => response.json())
+                .then(requests => {
+                    displayRequests(requests);
+                })
+                .catch(error => {
+                    console.error('Error loading requests:', error);
+                });
+        }
+
+        function displayRequests(requests) {
+            const requestsContainer = document.getElementById('mentorRequests');
+            
+            if (!requests || requests.length === 0) {
+                requestsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No requests yet</h3>
+                        <p>Start connecting with mentors!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const requestsList = requests.slice(0, 3).map(request => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <span class="request-mentor">Mentor Request</span>
+                        <span class="request-status status-${request.status}">${request.status}</span>
+                    </div>
+                    <div class="request-message">${request.message}</div>
+                    <div class="request-date">${new Date(request.createdAt).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+
+            requestsContainer.innerHTML = requestsList;
+        }
+
+        function logout() {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        // Refresh data every 30 seconds
+        setInterval(loadDashboardData, 30000);
+    </script>
+</body>
+</html> 

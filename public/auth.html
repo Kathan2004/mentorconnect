@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Authentication</title>
+    <title>MentorConnect - Welcome</title>
     <style>
-        /* General Reset */
         * {
             margin: 0;
             padding: 0;
@@ -13,240 +12,503 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            padding: 20px;
         }
 
         .auth-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 90%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 40px;
+            background: white;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            min-height: 600px;
         }
 
-        h1 {
-            font-size: 2rem;
-            color: #2a5298;
+        .auth-left {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .auth-right {
+            padding: 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
             margin-bottom: 20px;
         }
 
-        .options-container {
-            display: flex;
-            gap: 15px;
+        .tagline {
+            font-size: 1.2rem;
             margin-bottom: 30px;
+            opacity: 0.9;
         }
 
-        .option-button {
-            flex: 1;
-            background: #2a5298;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
+        .features {
+            list-style: none;
         }
 
-        .option-button:hover {
-            background: #1e3c72;
-        }
-
-        .form-container {
-            width: 100%;
-            display: none;
-            flex-direction: column;
+        .features li {
+            margin-bottom: 15px;
+            display: flex;
             align-items: center;
         }
 
-        .form-container.active {
+        .features li::before {
+            content: "✓";
+            margin-right: 10px;
+            font-weight: bold;
+            color: #4ade80;
+        }
+
+        .role-selection {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .role-title {
+            font-size: 2rem;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .role-subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .role-buttons {
             display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
-        .highlight-text {
-            color: #2a5298;
+        .role-btn {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 600;
         }
 
-        .input-field {
+        .role-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .role-btn.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .form-container {
+            display: none;
+        }
+
+        .form-container.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
+            border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 1rem;
+            transition: border-color 0.3s ease;
         }
 
-        .login-button {
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-btn {
             width: 100%;
-            padding: 12px;
-            margin-top: 20px;
-            background: #2a5298;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease;
         }
 
-        .login-button:hover {
-            background: #1e3c72;
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #667eea;
+            border: 1px solid #667eea;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #a7f3d0;
         }
 
         .error-message {
-            margin-top: 15px;
-            color: #ff7272;
-            font-size: 0.9rem;
-            display: none;
+            background: #fef2f2;
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 400px;
+            }
+            
+            .auth-left {
+                padding: 30px 20px;
+            }
+            
+            .auth-right {
+                padding: 30px 20px;
+            }
+            
+            .role-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <canvas id="background"></canvas>
-
     <div class="auth-container">
-        <h1>Welcome</h1>
-        <div class="options-container">
-            <button class="option-button" id="menteeButton">Login as Mentee</button>
-            <button class="option-button" id="mentorButton">Login as Mentor</button>
+        <div class="auth-left">
+            <div class="logo">MentorConnect</div>
+            <div class="tagline">Connect, Learn, Grow Together</div>
+            <ul class="features">
+                <li>Find the perfect mentor for your goals</li>
+                <li>Schedule personalized learning sessions</li>
+                <li>Track your progress and achievements</li>
+                <li>Build meaningful connections</li>
+                <li>Access expert knowledge and guidance</li>
+            </ul>
         </div>
+        
+        <div class="auth-right">
+            <div id="roleSelection" class="role-selection">
+                <h2 class="role-title">Welcome to MentorConnect</h2>
+                <p class="role-subtitle">Choose your role to get started</p>
+                
+                <div class="role-buttons">
+                    <button class="role-btn" onclick="selectRole('mentee')">
+                        <div>🎓</div>
+                        <div>I'm a Student</div>
+                        <small>Looking for guidance</small>
+                    </button>
+                    <button class="role-btn" onclick="selectRole('mentor')">
+                        <div>👨‍🏫</div>
+                        <div>I'm a Mentor</div>
+                        <small>Ready to help others</small>
+                    </button>
+                </div>
+            </div>
 
-        <!-- Mentee Login Form -->
-        <div class="form-container" id="menteeForm">
-            <h2 id="menteeText">Mentee Login</h2>
-            <input type="text" id="menteeUsername" class="input-field" placeholder="Username">
-            <input type="password" id="menteePassword" class="input-field" placeholder="Password">
-            <button class="login-button" onclick="login('mentee')">Login</button>
-            <p class="error-message" id="menteeError">Invalid username or password.</p>
-        </div>
+            <div id="menteeForm" class="form-container">
+                <button class="back-btn" onclick="showRoleSelection()">← Back</button>
+                <h2>Create Your Student Profile</h2>
+                <div id="menteeMessage"></div>
+                
+                <form id="menteeProfileForm">
+                    <div class="form-group">
+                        <label for="menteeName">Full Name</label>
+                        <input type="text" id="menteeName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteeEmail">Email</label>
+                        <input type="email" id="menteeEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteePhone">Phone</label>
+                        <input type="tel" id="menteePhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteeBio">Bio</label>
+                        <textarea id="menteeBio" rows="3" placeholder="Tell us about yourself and what you want to learn..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteeGoals">Learning Goals</label>
+                        <textarea id="menteeGoals" rows="3" placeholder="What do you want to achieve? (e.g., Learn React, Improve coding skills, Career guidance)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteeInterests">Areas of Interest</label>
+                        <textarea id="menteeInterests" rows="2" placeholder="What topics interest you? (e.g., Web Development, Data Science, AI/ML)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menteeLevel">Current Level</label>
+                        <select id="menteeLevel" required>
+                            <option value="">Select your level</option>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Create Profile & Continue</button>
+                </form>
+            </div>
 
-        <!-- Mentor Login Form -->
-        <div class="form-container" id="mentorForm">
-            <h2 id="mentorText">Mentor Login</h2>
-            <input type="text" id="mentorUsername" class="input-field" placeholder="Username">
-            <input type="password" id="mentorPassword" class="input-field" placeholder="Password">
-            <button class="login-button" onclick="login('mentor')">Login</button>
-            <p class="error-message" id="mentorError">Invalid username or password.</p>
+            <div id="mentorForm" class="form-container">
+                <button class="back-btn" onclick="showRoleSelection()">← Back</button>
+                <h2>Create Your Mentor Profile</h2>
+                <div id="mentorMessage"></div>
+                
+                <form id="mentorProfileForm">
+                    <div class="form-group">
+                        <label for="mentorName">Full Name</label>
+                        <input type="text" id="mentorName" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorEmail">Email</label>
+                        <input type="email" id="mentorEmail" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorPhone">Phone</label>
+                        <input type="tel" id="mentorPhone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorBio">Bio</label>
+                        <textarea id="mentorBio" rows="3" placeholder="Tell us about your expertise and experience..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorExperience">Work Experience</label>
+                        <textarea id="mentorExperience" rows="3" placeholder="Describe your professional experience and achievements..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorSkills">Skills & Expertise</label>
+                        <textarea id="mentorSkills" rows="2" placeholder="What skills can you teach? (e.g., JavaScript, React, Python, Data Science)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorLinkedIn">LinkedIn Profile</label>
+                        <input type="url" id="mentorLinkedIn" placeholder="https://linkedin.com/in/yourprofile">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorHourlyRate">Hourly Rate ($)</label>
+                        <input type="number" id="mentorHourlyRate" min="0" placeholder="50" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mentorAvailability">Availability</label>
+                        <select id="mentorAvailability" required>
+                            <option value="">Select availability</option>
+                            <option value="weekdays">Weekdays</option>
+                            <option value="weekends">Weekends</option>
+                            <option value="flexible">Flexible</option>
+                            <option value="evenings">Evenings Only</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Create Profile & Continue</button>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        const menteeButton = document.getElementById('menteeButton');
-        const mentorButton = document.getElementById('mentorButton');
-        const menteeForm = document.getElementById('menteeForm');
-        const mentorForm = document.getElementById('mentorForm');
-        const menteeText = document.getElementById('menteeText');
-        const mentorText = document.getElementById('mentorText');
+        let selectedRole = null;
 
-        menteeButton.addEventListener('click', () => {
-            menteeForm.classList.add('active');
-            mentorForm.classList.remove('active');
-            menteeText.classList.add('highlight-text');
-            mentorText.classList.remove('highlight-text');
-        });
-
-        mentorButton.addEventListener('click', () => {
-            mentorForm.classList.add('active');
-            menteeForm.classList.remove('active');
-            mentorText.classList.add('highlight-text');
-            menteeText.classList.remove('highlight-text');
-        });
-
-        const login = (role) => {
-            let username, password, errorElement;
+        function selectRole(role) {
+            selectedRole = role;
+            document.getElementById('roleSelection').style.display = 'none';
+            
             if (role === 'mentee') {
-                username = document.getElementById('menteeUsername').value.trim();
-                password = document.getElementById('menteePassword').value;
-                errorElement = document.getElementById('menteeError');
-                if (username === 'Manas' && password === 'admin@manas') {
+                document.getElementById('menteeForm').classList.add('active');
+            } else {
+                document.getElementById('mentorForm').classList.add('active');
+            }
+        }
+
+        function showRoleSelection() {
+            selectedRole = null;
+            document.getElementById('roleSelection').style.display = 'block';
+            document.getElementById('menteeForm').classList.remove('active');
+            document.getElementById('mentorForm').classList.remove('active');
+        }
+
+        // Handle mentee form submission
+        document.getElementById('menteeProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('menteeName').value,
+                email: document.getElementById('menteeEmail').value,
+                phone: document.getElementById('menteePhone').value,
+                bio: document.getElementById('menteeBio').value,
+                goals: document.getElementById('menteeGoals').value,
+                interests: document.getElementById('menteeInterests').value,
+                currentLevel: document.getElementById('menteeLevel').value
+            };
+
+            fetch('/api/mentee/saveProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store user info in localStorage
                     localStorage.setItem('userRole', 'mentee');
-                    window.location.href = 'index.html';
+                    localStorage.setItem('userId', data.mentee.id);
+                    localStorage.setItem('userName', data.mentee.name);
+                    
+                    showMessage('menteeMessage', 'Profile created successfully! Redirecting to dashboard...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/mentee/dashboard';
+                    }, 2000);
                 } else {
-                    errorElement.style.display = 'block';
+                    showMessage('menteeMessage', 'Error creating profile. Please try again.', 'error');
                 }
-            } else if (role === 'mentor') {
-                username = document.getElementById('mentorUsername').value.trim();
-                password = document.getElementById('mentorPassword').value;
-                errorElement = document.getElementById('mentorError');
-                if (username === 'mentorUser' && password === 'mentorPass') {
-                    localStorage.setItem('userRole', 'mentor');
-                    window.location.href = 'mentor.html';
-                } else {
-                    errorElement.style.display = 'block';
-                }
-            }
-        };
-
-        const canvas = document.getElementById("background");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particlesArray = [];
-        const colors = ["#fff", "#4e56f5", "#2a5298"];
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
-                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            for (let i = 0; i < 100; i++) {
-                particlesArray.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach((particle) => {
-                particle.update();
-                particle.draw();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('menteeMessage', 'Error creating profile. Please try again.', 'error');
             });
-            requestAnimationFrame(animateParticles);
+        });
+
+        // Handle mentor form submission
+        document.getElementById('mentorProfileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('mentorName').value,
+                email: document.getElementById('mentorEmail').value,
+                phone: document.getElementById('mentorPhone').value,
+                bio: document.getElementById('mentorBio').value,
+                experience: document.getElementById('mentorExperience').value,
+                skills: document.getElementById('mentorSkills').value,
+                linkedin: document.getElementById('mentorLinkedIn').value,
+                hourlyRate: parseInt(document.getElementById('mentorHourlyRate').value),
+                availability: document.getElementById('mentorAvailability').value
+            };
+
+            fetch('/api/mentor/saveProfile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Store user info in localStorage
+                    localStorage.setItem('userRole', 'mentor');
+                    localStorage.setItem('userId', data.mentor.id);
+                    localStorage.setItem('userName', data.mentor.name);
+                    
+                    showMessage('mentorMessage', 'Profile created successfully! Redirecting to dashboard...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/mentor/dashboard';
+                    }, 2000);
+                } else {
+                    showMessage('mentorMessage', 'Error creating profile. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showMessage('mentorMessage', 'Error creating profile. Please try again.', 'error');
+            });
+        });
+
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            const messageClass = type === 'success' ? 'success-message' : 'error-message';
+            element.innerHTML = `<div class="${messageClass}">${message}</div>`;
         }
 
-        initParticles();
-        animateParticles();
+        // Check if user is already logged in
+        window.addEventListener('load', function() {
+            const userRole = localStorage.getItem('userRole');
+            const userId = localStorage.getItem('userId');
+            
+            if (userRole && userId) {
+                // User is already logged in, redirect to appropriate dashboard
+                if (userRole === 'mentee') {
+                    window.location.href = '/mentee/dashboard';
+                } else {
+                    window.location.href = '/mentor/dashboard';
+                }
+            }
+        });
     </script>
 </body>
 </html>

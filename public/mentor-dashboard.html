@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mentor Dashboard - MentorConnect</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background: #f7fafc;
+            color: #667eea;
+        }
+
+        .nav-link.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-subtitle {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            color: #48bb78;
+        }
+
+        .sessions-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .mentees-bg { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .earnings-bg { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .requests-bg { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: white; }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .card-action {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .request-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .request-item:last-child {
+            border-bottom: none;
+        }
+
+        .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-mentee {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .request-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-pending { background: #fef5e7; color: #d69e2e; }
+        .status-approved { background: #c6f6d5; color: #2f855a; }
+        .status-rejected { background: #fed7d7; color: #c53030; }
+
+        .request-message {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-date {
+            color: #a0aec0;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .request-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-approve {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-approve:hover {
+            background: #38a169;
+        }
+
+        .btn-reject {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reject:hover {
+            background: #e53e3e;
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .session-item:last-child {
+            border-bottom: none;
+        }
+
+        .session-info h4 {
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .session-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .session-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-upcoming { background: #bee3f8; color: #2b6cb0; }
+        .status-ongoing { background: #c6f6d5; color: #2f855a; }
+        .status-completed { background: #fed7d7; color: #c53030; }
+
+        .mentee-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .mentee-item:last-child {
+            border-bottom: none;
+        }
+
+        .mentee-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .mentee-info h4 {
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .mentee-info p {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .action-btn {
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            background: #f7fafc;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #718096;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">MentorConnect</div>
+            <div class="nav-links">
+                <a href="/mentor/dashboard" class="nav-link active">Dashboard</a>
+                <a href="/mentor/requests" class="nav-link">Requests</a>
+                <a href="/mentor/messages" class="nav-link">Messages</a>
+                <a href="/mentor/sessions" class="nav-link">Sessions</a>
+                <a href="/mentor/profile" class="nav-link">Profile</a>
+            </div>
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">M</div>
+                <span id="userName">Mentor</span>
+                <button class="logout-btn" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="welcome-section">
+            <h1 class="welcome-title" id="welcomeTitle">Welcome back!</h1>
+            <p class="welcome-subtitle">Here's what's happening with your mentoring</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Sessions</span>
+                    <div class="stat-icon sessions-bg">📅</div>
+                </div>
+                <div class="stat-value" id="totalSessions">0</div>
+                <div class="stat-change">+5 this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Mentees</span>
+                    <div class="stat-icon mentees-bg">👨‍🎓</div>
+                </div>
+                <div class="stat-value" id="activeMentees">0</div>
+                <div class="stat-change">+2 this week</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Earnings</span>
+                    <div class="stat-icon earnings-bg">💰</div>
+                </div>
+                <div class="stat-value" id="totalEarnings">$0</div>
+                <div class="stat-change">+$250 this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Requests</span>
+                    <div class="stat-icon requests-bg">📝</div>
+                </div>
+                <div class="stat-value" id="pendingRequests">0</div>
+                <div class="stat-change">+3 this week</div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="main-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Pending Mentor Requests</h2>
+                        <a href="/mentor/requests" class="card-action">View All</a>
+                    </div>
+                    <div id="pendingRequestsList">
+                        <div class="empty-state">
+                            <h3>No pending requests</h3>
+                            <p>All requests have been processed!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Upcoming Sessions</h2>
+                        <a href="/mentor/sessions" class="card-action">View All</a>
+                    </div>
+                    <div id="upcomingSessions">
+                        <div class="empty-state">
+                            <h3>No upcoming sessions</h3>
+                            <p>No sessions scheduled for the next few days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Active Mentees</h2>
+                        <a href="/mentor/sessions" class="card-action">View All</a>
+                    </div>
+                    <div id="activeMenteesList">
+                        <div class="empty-state">
+                            <h3>No active mentees</h3>
+                            <p>Start accepting requests to build your mentee network!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quick Actions</h2>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="/mentor/requests" class="action-btn">Review Requests</a>
+                        <a href="/mentor/messages" class="action-btn">Check Messages</a>
+                        <a href="/mentor/sessions" class="action-btn">Schedule Session</a>
+                        <a href="/mentor/profile" class="action-btn">Update Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        // Check authentication
+        function checkAuth() {
+            const userRole = localStorage.getItem('userRole');
+            const userId = localStorage.getItem('userId');
+            const userName = localStorage.getItem('userName');
+
+            if (!userRole || !userId || userRole !== 'mentor') {
+                window.location.href = '/';
+                return;
+            }
+
+            currentUser = {
+                id: userId,
+                name: userName,
+                role: userRole
+            };
+
+            // Update UI
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('userAvatar').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('welcomeTitle').textContent = `Welcome back, ${currentUser.name}!`;
+
+            // Load dashboard data
+            loadDashboardData();
+        }
+
+        function loadDashboardData() {
+            loadUserProfile();
+            loadPendingRequests();
+            loadSessions();
+            loadActiveMentees();
+        }
+
+        function loadUserProfile() {
+            fetch(`/api/mentor/getProfile/${currentUser.id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.id) {
+                        updateStats(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading profile:', error);
+                });
+        }
+
+        function updateStats(profile) {
+            document.getElementById('totalSessions').textContent = profile.totalSessions || 0;
+            // Calculate earnings based on sessions and hourly rate
+            const earnings = (profile.totalSessions || 0) * (profile.hourlyRate || 0);
+            document.getElementById('totalEarnings').textContent = `$${earnings}`;
+        }
+
+        function loadPendingRequests() {
+            fetch(`/api/mentor/requests/${currentUser.id}`)
+                .then(response => response.json())
+                .then(requests => {
+                    displayPendingRequests(requests);
+                })
+                .catch(error => {
+                    console.error('Error loading requests:', error);
+                });
+        }
+
+        function displayPendingRequests(requests) {
+            const requestsContainer = document.getElementById('pendingRequestsList');
+            const pendingCount = document.getElementById('pendingRequests');
+            
+            const pendingRequests = requests.filter(req => req.status === 'pending');
+            pendingCount.textContent = pendingRequests.length;
+
+            if (pendingRequests.length === 0) {
+                requestsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No pending requests</h3>
+                        <p>All requests have been processed!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const requestsList = pendingRequests.slice(0, 3).map(request => `
+                <div class="request-item">
+                    <div class="request-header">
+                        <span class="request-mentee">Mentee Request</span>
+                        <span class="request-status status-pending">Pending</span>
+                    </div>
+                    <div class="request-message">${request.message}</div>
+                    <div class="request-date">${new Date(request.createdAt).toLocaleDateString()}</div>
+                    <div class="request-actions">
+                        <button class="btn-approve" onclick="handleRequest('${request.id}', 'approved')">Approve</button>
+                        <button class="btn-reject" onclick="handleRequest('${request.id}', 'rejected')">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+
+            requestsContainer.innerHTML = requestsList;
+        }
+
+        function handleRequest(requestId, status) {
+            const responseMessage = status === 'approved' ? 'Request approved!' : 'Request rejected.';
+            
+            fetch(`/api/mentor/request/${requestId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    status: status,
+                    responseMessage: responseMessage
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload requests
+                    loadPendingRequests();
+                    // Show success message
+                    alert(`Request ${status} successfully!`);
+                } else {
+                    alert('Error processing request. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error handling request:', error);
+                alert('Error processing request. Please try again.');
+            });
+        }
+
+        function loadSessions() {
+            fetch(`/api/sessions/${currentUser.id}/mentor`)
+                .then(response => response.json())
+                .then(sessions => {
+                    displaySessions(sessions);
+                })
+                .catch(error => {
+                    console.error('Error loading sessions:', error);
+                });
+        }
+
+        function displaySessions(sessions) {
+            const sessionsContainer = document.getElementById('upcomingSessions');
+            
+            if (!sessions || sessions.length === 0) {
+                sessionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No upcoming sessions</h3>
+                        <p>No sessions scheduled for the next few days.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter upcoming sessions (next 7 days)
+            const upcoming = sessions.filter(session => {
+                const sessionDate = new Date(session.date);
+                const today = new Date();
+                const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+                return sessionDate >= today && sessionDate <= nextWeek;
+            }).slice(0, 3);
+
+            if (upcoming.length === 0) {
+                sessionsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No upcoming sessions</h3>
+                        <p>No sessions scheduled for the next few days.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const sessionsList = upcoming.map(session => `
+                <div class="session-item">
+                    <div class="session-info">
+                        <h4>Session with Mentee</h4>
+                        <p>${new Date(session.date).toLocaleDateString()} at ${session.time}</p>
+                    </div>
+                    <span class="session-status status-upcoming">Upcoming</span>
+                </div>
+            `).join('');
+
+            sessionsContainer.innerHTML = sessionsList;
+        }
+
+        function loadActiveMentees() {
+            fetch(`/api/sessions/${currentUser.id}/mentor`)
+                .then(response => response.json())
+                .then(sessions => {
+                    displayActiveMentees(sessions);
+                })
+                .catch(error => {
+                    console.error('Error loading mentees:', error);
+                });
+        }
+
+        function displayActiveMentees(sessions) {
+            const menteesContainer = document.getElementById('activeMenteesList');
+            const activeMenteesCount = document.getElementById('activeMentees');
+            
+            // Get unique mentees from sessions
+            const menteeIds = [...new Set(sessions.map(s => s.menteeId))];
+            activeMenteesCount.textContent = menteeIds.length;
+
+            if (menteeIds.length === 0) {
+                menteesContainer.innerHTML = `
+                    <div class="empty-state">
+                        <h3>No active mentees</h3>
+                        <p>Start accepting requests to build your mentee network!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // For now, show placeholder mentees. In a real app, you'd fetch mentee details
+            const menteesList = menteeIds.slice(0, 3).map((menteeId, index) => `
+                <div class="mentee-item">
+                    <div class="mentee-avatar">M${index + 1}</div>
+                    <div class="mentee-info">
+                        <h4>Mentee ${index + 1}</h4>
+                        <p>Active mentee</p>
+                    </div>
+                </div>
+            `).join('');
+
+            menteesContainer.innerHTML = menteesList;
+        }
+
+        function logout() {
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            window.location.href = '/';
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', checkAuth);
+
+        // Refresh data every 30 seconds
+        setInterval(loadDashboardData, 30000);
+    </script>
+</body>
+</html> 
